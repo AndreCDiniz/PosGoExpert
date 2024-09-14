@@ -9,9 +9,9 @@ import (
 )
 
 func main() {
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second*10)
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*3)
 	defer cancel()
-	req, err := http.NewRequestWithContext(ctx, "GET", "localhost:8282", nil)
+	req, err := http.NewRequestWithContext(ctx, "GET", "http://localhost:8282", nil)
 	if err != nil {
 		panic(err)
 	}
