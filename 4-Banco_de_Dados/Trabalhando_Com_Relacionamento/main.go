@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
@@ -8,7 +9,8 @@ import (
 
 type Category struct {
 	gorm.Model
-	Name string
+	Name     string
+	Products []Product
 }
 
 type Product struct {
@@ -41,25 +43,37 @@ func main() {
 	}
 
 	//create catergory
-	category := Category{Name: "Eletrônicos"}
+	category := Category{Name: "Home"}
 	db.Create(&category)
 
 	//create product
 	db.Create(&Product{
-		Name:       "Smartphone",
+		Name:       "Desk",
 		Price:      2000,
-		CategoryID: category.ID,
+		CategoryID: 2,
 	})
 
 	//create a serial number
-	db.Create(&SerialNumber{
-		Number:    "12345",
-		ProductID: 1,
-	})
+	//db.Create(&SerialNumber{
+	//	Number:    "12345",
+	//	ProductID: 1,
+	//})
 
-	var product []Product
-	db.Preload("Category").Preload("SerialNumber").Find(&product)
-	for _, product := range product {
-		println(product.Name, product.Category.Name, product.SerialNumber.Number)
+	var categories []Category
+	err = db.Model(&Category{}).Preload("Products").Find(&categories).Error
+	if err != nil {
+		panic(err)
 	}
+	for _, category := range categories {
+		fmt.Println(category.Name, ":")
+		for _, product := range category.Products {
+			println("- ", product.Name)
+		}
+	}
+
+	//var product []Product
+	//db.Preload("Category").Preload("SerialNumber").Find(&product)
+	//for _, product := range product {
+	//	println(product.Name, product.Category.Name, product.SerialNumber.Number)
+	//}
 }
