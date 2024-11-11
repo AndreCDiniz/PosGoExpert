@@ -10,24 +10,23 @@ import (
 type Category struct {
 	gorm.Model
 	Name     string
-	Products []Product
+	Products []Product `gorm:"many2many:product_categories;"`
 }
 
 type Product struct {
 	gorm.Model
-	Name         string
-	Price        float64
-	CategoryID   int
-	Category     Category
-	SerialNumber SerialNumber
+	Name       string
+	Price      float64
+	Categories []Category `gorm:"many2many:product_categories;"`
+	//SerialNumber SerialNumber
 }
 
-type SerialNumber struct {
-	gorm.Model
-	ID        int
-	Number    string
-	ProductID int
-}
+//type SerialNumber struct {
+//	gorm.Model
+//	ID        int
+//	Number    string
+//	ProductID int
+//}
 
 func main() {
 	dsn := "root:root@tcp(localhost:3306)/goexpert?charset=utf8mb4&parseTime=True&loc=Local"
@@ -37,7 +36,7 @@ func main() {
 	if err != nil {
 		panic("failed to connect database")
 	}
-	err = db.AutoMigrate(&Category{}, &Product{}, &SerialNumber{})
+	err = db.AutoMigrate(&Category{}, &Product{})
 	if err != nil {
 		panic(err)
 	}
@@ -46,13 +45,16 @@ func main() {
 	//category := Category{Name: "Cozinha"}
 	//db.Create(&category)
 	//
+	//category2 := Category{Name: "Eletronico"}
+	//db.Create(&category2)
+	//
 	////create product
 	//db.Create(&Product{
 	//	Name:       "Panela",
 	//	Price:      99.0,
-	//	CategoryID: 1,
+	//	Categories: []Category{category, category2},
 	//})
-	//
+
 	////create a serial number
 	//db.Create(&SerialNumber{
 	//	Number:    "12345",
@@ -60,14 +62,14 @@ func main() {
 	//})
 
 	var categories []Category
-	err = db.Model(&Category{}).Preload("Products.SerialNumber").Find(&categories).Error
+	err = db.Model(&Category{}).Preload("Products").Find(&categories).Error
 	if err != nil {
 		panic(err)
 	}
 	for _, category := range categories {
 		fmt.Println(category.Name, ":")
 		for _, product := range category.Products {
-			println("- ", product.Name, "Serial Number:", product.SerialNumber.Number)
+			println("- ", product.Name)
 		}
 	}
 
