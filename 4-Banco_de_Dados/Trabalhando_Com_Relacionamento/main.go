@@ -17,9 +17,9 @@ type Product struct {
 	gorm.Model
 	Name         string
 	Price        float64
-	CategoryID   uint
-	SerialNumber SerialNumber
+	CategoryID   int
 	Category     Category
+	SerialNumber SerialNumber
 }
 
 type SerialNumber struct {
@@ -42,32 +42,32 @@ func main() {
 		panic(err)
 	}
 
-	//create catergory
-	category := Category{Name: "Home"}
-	db.Create(&category)
-
-	//create product
-	db.Create(&Product{
-		Name:       "Desk",
-		Price:      2000,
-		CategoryID: 2,
-	})
-
-	//create a serial number
+	////create catergory
+	//category := Category{Name: "Cozinha"}
+	//db.Create(&category)
+	//
+	////create product
+	//db.Create(&Product{
+	//	Name:       "Panela",
+	//	Price:      99.0,
+	//	CategoryID: 1,
+	//})
+	//
+	////create a serial number
 	//db.Create(&SerialNumber{
 	//	Number:    "12345",
 	//	ProductID: 1,
 	//})
 
 	var categories []Category
-	err = db.Model(&Category{}).Preload("Products").Find(&categories).Error
+	err = db.Model(&Category{}).Preload("Products.SerialNumber").Find(&categories).Error
 	if err != nil {
 		panic(err)
 	}
 	for _, category := range categories {
 		fmt.Println(category.Name, ":")
 		for _, product := range category.Products {
-			println("- ", product.Name)
+			println("- ", product.Name, "Serial Number:", product.SerialNumber.Number)
 		}
 	}
 
