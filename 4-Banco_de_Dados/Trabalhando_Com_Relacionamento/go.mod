@@ -1,4 +1,5 @@
-module github.com/AndreCDiniz/PosGoExpert/PosGoExpert/4/0
+module github.com/AndreCDiniz/PosGoExpert/PosGoExpert/4/2
+
 go 1.22.4
 
 require (
