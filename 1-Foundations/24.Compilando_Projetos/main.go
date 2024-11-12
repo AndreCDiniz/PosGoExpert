@@ -4,7 +4,7 @@ package main
 O go é uma linguagem compilada
 Para criar o arquivo binario usamos o codigo go build
 e também podemos deicidir para qual sistema operacional podemos usar exemplo
-goos=windows go build main.go
+goos=windows go build server.go
 um site para podermos ver o sistema operacional e a arquitetura podemos usar o site da digitalocean
 https://www.digitalocean.com/community/tutorials/building-go-applications-for-different-operating-systems-and-architectures
 */
