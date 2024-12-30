@@ -105,7 +105,7 @@ Check the respective **notes** or **exercises** folder for any specific instruct
 
 ## License
 
-This repository is distributed under the [MIT License](LICENSE.md) (example). Feel free to use and modify the code according to the terms described. However, please do **not** share proprietary materials from the Full Cycle course that violate their rights.
+This repository is distributed under the [MIT License](LICENSE.md). Feel free to use and modify the code according to the terms described. However, please do **not** share proprietary materials from the Full Cycle course that violate their rights.
 
 ---
 
