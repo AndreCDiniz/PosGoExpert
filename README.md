@@ -113,8 +113,7 @@ This repository is distributed under the [MIT License](LICENSE.md) (example). Fe
 
 For questions or suggestions, feel free to reach out:
 
-- **LinkedIn**: [Your LinkedIn Profile](#)
-- **E-mail**: your.email@example.com  
+- **LinkedIn**: [André Diniz](https://www.linkedin.com/in/andrefcdiniz/)
 
 ---
 
