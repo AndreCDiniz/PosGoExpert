@@ -1,11 +1,12 @@
 package main
 
 import (
-	"encoding/json"
 	"github.com/AndreCDiniz/PosGoExpert/7-APIs/configs"
-	"github.com/AndreCDiniz/PosGoExpert/7-APIs/internal/dto"
 	"github.com/AndreCDiniz/PosGoExpert/7-APIs/internal/entity"
 	"github.com/AndreCDiniz/PosGoExpert/7-APIs/internal/infra/database"
+	"github.com/AndreCDiniz/PosGoExpert/7-APIs/internal/infra/webserver/handlers"
+	"github.com/go-chi/chi"
+	"github.com/go-chi/chi/middleware"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 	"net/http"
@@ -22,36 +23,15 @@ func main() {
 	}
 	db.AutoMigrate(&entity.Product{}, &entity.User{})
 	productDB := database.NewProduct(db)
-	productHandler := NewProductHandler(productDB)
+	productHandler := handlers.NewProductHandler(productDB)
 
-	http.HandleFunc("/products", productHandler.CreateProduct)
-	http.ListenAndServe(":8000", nil)
-}
+	router := chi.NewRouter()
+	router.Use(middleware.Logger)
+	router.Post("/products", productHandler.CreateProduct)
+	router.Get("/products", productHandler.GetProducts)
+	router.Get("/products/{id}", productHandler.GetProduct)
+	router.Put("/products/{id}", productHandler.UpdateProduct)
+	router.Delete("/products/{id}", productHandler.DeleteProduct)
 
-type ProductHandler struct {
-	ProductDB database.ProductInterface
-}
-
-func NewProductHandler(db database.ProductInterface) *ProductHandler {
-	return &ProductHandler{ProductDB: db}
-}
-
-func (h *ProductHandler) CreateProduct(w http.ResponseWriter, r *http.Request) {
-	var product dto.CreateProductInput
-	err := json.NewDecoder(r.Body).Decode(&product)
-	if err != nil {
-		w.WriteHeader(http.StatusBadRequest)
-		return
-	}
-	p, err := entity.NewProduct(product.Name, product.Price)
-	if err != nil {
-		w.WriteHeader(http.StatusBadRequest)
-		return
-	}
-	err = h.ProductDB.Create(p)
-	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
-		return
-	}
-	w.WriteHeader(http.StatusCreated)
+	http.ListenAndServe(":8000", router)
 }

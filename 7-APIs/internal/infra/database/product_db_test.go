@@ -29,7 +29,7 @@ func TestCreateNewProduct(t *testing.T) {
 	assert.NotEmpty(t, product.ID)
 }
 
-func TestFinadAllProducts(t *testing.T) {
+func TestFindAllProducts(t *testing.T) {
 	db, productDB := setupDb(t)
 
 	for i := 1; i < 24; i++ {
