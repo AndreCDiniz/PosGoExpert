@@ -7,12 +7,15 @@ import (
 	"github.com/AndreCDiniz/PosGoExpert/7-APIs/internal/infra/database"
 	entityPkg "github.com/AndreCDiniz/PosGoExpert/7-APIs/pkg/entity"
 	"github.com/go-chi/chi"
+	"github.com/go-chi/jwtauth"
 	"net/http"
 	"strconv"
 )
 
 type ProductHandler struct {
-	ProductDB database.ProductInterface
+	ProductDB    database.ProductInterface
+	Jtw          *jwtauth.JWTAuth
+	JwtExpiresIn int
 }
 
 func NewProductHandler(db database.ProductInterface) *ProductHandler {

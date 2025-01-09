@@ -1,5 +1,6 @@
 POST http://localhost:8000/products
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MzY0Mzg5NjIsInN1YiI6ImNlN2U1ZTQ3LTAxOTgtNGYzZS05NTE3LTczOTliYTk4MDllMCJ9.hAFlmTzybw0QMuBetA0HQu32EBK4dWcZmL40MbXSDGA
 
 {
     "name": "Product 3",
@@ -9,15 +10,18 @@ Content-Type: application/json
 ###
 
 GET http://localhost:8000/products HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MzY0NDM4ODIsInN1YiI6ImNlN2U1ZTQ3LTAxOTgtNGYzZS05NTE3LTczOTliYTk4MDllMCJ9.dZXgXhe10zL1QEYEFSssqXNLfO3gZSKaDj5Uzk-WUD0
 
 ###
 
 GET http://localhost:8000/products/c5a97f48-a88b-42eb-864b-4bda51859193 HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MzY0Mzg5NjIsInN1YiI6ImNlN2U1ZTQ3LTAxOTgtNGYzZS05NTE3LTczOTliYTk4MDllMCJ9.hAFlmTzybw0QMuBetA0HQu32EBK4dWcZmL40MbXSDGA
 
 ###
 
 PUT http://localhost:8000/products/c5a97f48-a88b-42eb-864b-4bda51859193 HTTP/1.1
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MzY0Mzg5NjIsInN1YiI6ImNlN2U1ZTQ3LTAxOTgtNGYzZS05NTE3LTczOTliYTk4MDllMCJ9.hAFlmTzybw0QMuBetA0HQu32EBK4dWcZmL40MbXSDGA
 
 {
     "name": "Product Updated",
@@ -27,3 +31,4 @@ Content-Type: application/json
 ###
 
 DELETE http://localhost:8000/products/c5a97f48-a88b-42eb-864b-4bda51859193 HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MzY0Mzg5NjIsInN1YiI6ImNlN2U1ZTQ3LTAxOTgtNGYzZS05NTE3LTczOTliYTk4MDllMCJ9.hAFlmTzybw0QMuBetA0HQu32EBK4dWcZmL40MbXSDGA
