@@ -28,7 +28,7 @@ func NewUserHandler(db database.UserInterface) *UserHandler {
 // GetJWT godoc
 // @Summary Get a user JWT
 // @Description Get a user JWT
-// @Tags users
+// @Tags Users
 // @Accept json
 // @Produce json
 // @Param request body dto.GetJWTInput true "user request"
