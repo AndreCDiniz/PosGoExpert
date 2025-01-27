@@ -1,19 +1,37 @@
 package main
 
 import (
+	"log"
+	"net/http"
+
 	"github.com/AndreCDiniz/PosGoExpert/7-APIs/configs"
+	_ "github.com/AndreCDiniz/PosGoExpert/7-APIs/docs"
 	"github.com/AndreCDiniz/PosGoExpert/7-APIs/internal/entity"
 	"github.com/AndreCDiniz/PosGoExpert/7-APIs/internal/infra/database"
 	"github.com/AndreCDiniz/PosGoExpert/7-APIs/internal/infra/webserver/handlers"
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
 	"github.com/go-chi/jwtauth"
+	httpSwagger "github.com/swaggo/http-swagger"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
-	"log"
-	"net/http"
 )
 
+// @title Go Expert API
+// @version 1.0
+// @description Product API with authentication
+// @termsOfService http://swagger.io/terms/
+
+// @contact.name Andre Diniz
+// @contact.email andrefcd23@gmail.com
+// @license.name Full Cycle License
+// @license.url http://www.fullcycle.com.br
+
+// @host localhost:8000
+// @BasePath /
+// @securityDefinitions.apikey ApiKeyAuth
+// @in header
+// @name Authorization
 func main() {
 	config, err := configs.LoadConfig(".")
 	if err != nil {
@@ -31,26 +49,28 @@ func main() {
 	userDB := database.NewUser(db)
 	userHandler := handlers.NewUserHandler(userDB)
 
-	router := chi.NewRouter()
-	router.Use(middleware.Logger)
-	router.Use(middleware.Recoverer)
-	router.Use(middleware.WithValue("jwt", config.TokenAuth))
-	router.Use(middleware.WithValue("JwtExpiresIn", config.JwtExpiresIn))
+	r := chi.NewRouter()
+	r.Use(middleware.Logger)
+	r.Use(middleware.Recoverer)
+	r.Use(middleware.WithValue("jwt", config.TokenAuth))
+	r.Use(middleware.WithValue("JwtExpiresIn", config.JwtExpiresIn))
 
-	router.Route("/products", func(router chi.Router) {
-		router.Use(jwtauth.Verifier(config.TokenAuth))
-		router.Use(jwtauth.Authenticator)
-		router.Post("/", productHandler.CreateProduct)
-		router.Get("/", productHandler.GetProducts)
-		router.Get("/{id}", productHandler.GetProduct)
-		router.Put("/{id}", productHandler.UpdateProduct)
-		router.Delete("/{id}", productHandler.DeleteProduct)
+	r.Route("/products", func(r chi.Router) {
+		r.Use(jwtauth.Verifier(config.TokenAuth))
+		r.Use(jwtauth.Authenticator)
+		r.Post("/", productHandler.CreateProduct)
+		r.Get("/", productHandler.GetProducts)
+		r.Get("/{id}", productHandler.GetProduct)
+		r.Put("/{id}", productHandler.UpdateProduct)
+		r.Delete("/{id}", productHandler.DeleteProduct)
 	})
 
-	router.Post("/users", userHandler.CreateUser)
-	router.Post("/users/generate_token", userHandler.GetJWT)
+	r.Post("/users", userHandler.CreateUser)
+	r.Post("/users/generate_token", userHandler.GetJWT)
+
+	r.Get("/docs/*", httpSwagger.Handler(httpSwagger.URL("http://localhost:8000/docs/doc.json")))
 
 	log.Println("Server is running")
-	http.ListenAndServe(":8000", router)
+	http.ListenAndServe(":8000", r)
 
 }
